@@ -1,30 +1,41 @@
 import { useState,useEffect } from "react";
-import {BiUserCircle,BiExit} from 'react-icons/bi'
+import {BiUserCircle,BiExit,BiLogIn} from 'react-icons/bi'
 import useUserContext from "../../../hooks/useUser";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
     const [navbar, setNavbar] = useState(false);
-    const {userLog,setUserLog} = useUserContext();
     const navigate = useNavigate();
+    const {userLog,setUserLog} = useUserContext();
+    const [user,setUser] = useState(null)
 
     useEffect(()=>{
-        if(userLog === '' && localStorage.getItem('user') === null){
-            navigate("/login");
+        if(userLog !== '' && localStorage.getItem('user') !== null){
+            setUser(localStorage.getItem('user'))
         }
     },[userLog])
 
     const logout = () => {
         setUserLog('')
         localStorage.removeItem('user')
+        window.location.reload()
     }
 
     const handleHome = () => {
         navigate('/')
     }
 
+    const handleLogin = () => {
+        navigate('/login')
+    }
+
+    const handleMyDiscussions = () => {
+        navigate('/mydiscussions')
+    }
+
     return (
-        <nav className="w-full bg-slate-700 shadow">
+        <nav className="w-full bg-custom-blue shadow">
             <div className="justify-between px-4 mx-auto lg:max-w-7xl md:items-center md:flex md:px-8">
                 <div>
                     <div className="flex items-center justify-between py-3 md:py-5 md:block">
@@ -82,7 +93,9 @@ export default function Navbar() {
                                 </a>
                             </li>
                             <li className="text-white hover:text-indigo-200">
-                                <a href="#">Mis discusiones</a>
+                                <a onClick={()=>{handleMyDiscussions()}} className="cursor-pointer">
+                                    Mis discusiones
+                                </a>
                             </li>
                             <li className="text-white hover:text-indigo-200">
                                 <a href="#">Chat</a>
@@ -93,35 +106,65 @@ export default function Navbar() {
                         </ul>
 
                         <div className="mt-3 space-y-2 lg:hidden md:inline-block">
-                    <a
-                        href="#"
-                        className="inline-flex w-full px-4 py-2 text-center text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
-                    >
-                        <p className="text-white m-auto inline-flex"><BiUserCircle className="h-7 w-7 mr-3"/> Perfil</p>
+                            {user ? (
+                                <>
+                                    <Link to={`/profile/${userLog.id}`}>
+                                        <a
+                                            href="#"
+                                            className="inline-flex w-full px-4 py-2 text-center text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
+                                        >
+                                            <p className="text-white m-auto inline-flex"><BiUserCircle className="h-7 w-7 mr-3"/> Perfil</p>
 
-                    </a>
-                    <a
-                        href="#"
-                        className="inline-block w-full px-3 py-2 text-center bg-gray-600 rounded-md shadow hover:bg-gray-800"
-                    >
-                        <p className="text-white m-auto inline-flex"><BiExit className="h-7 w-7 mr-3"/> Salir</p>
-                    </a>
-                </div>
+                                        </a>
+                                    </Link>                                    
+                                    <a
+                                        href="#"
+                                        className="inline-block w-full px-3 py-2 text-center bg-gray-600 rounded-md shadow hover:bg-gray-800"
+                                        onClick={()=>{logout()}}
+                                    >
+                                        <p className="text-white m-auto inline-flex"><BiExit className="h-7 w-7 mr-3"/> Salir</p>
+                                    </a>
+                                </>
+                            ) : (<>
+                                    <a
+                                        href="#"
+                                        className="inline-flex w-full px-4 py-2 text-center text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
+                                        onClick={()=>{handleLogin()}}
+                                    >
+                                        <p className="text-white m-auto inline-flex"><BiLogIn className="h-7 w-7 mr-3"/>Iniciar sesión</p>
+
+                                    </a>
+                            </>)}
+                        </div>
                     </div>
                 </div>
                 <div className="hidden space-x-2 md:inline-flex">
-                    <a
-                        href="#"
-                        className=" text-white rounded-md shadow hover:bg-gray-800"
-                    >
-                        <BiUserCircle className="h-7 w-7 text-white"/>
-                    </a>
-                    <a
-                        href="#"
-                        className=" text-gray-800 rounded-md shadow hover:bg-gray-800"
-                    >
-                        <BiExit className="h-7 w-7 text-white" onClick={()=>{logout()}}/>
-                    </a>
+                    {user ? (<>
+                        <Link to={`/profile/${userLog.id}`}>
+                            <a
+                            href="#"
+                            className=" text-white rounded-md shadow hover:bg-gray-800"
+                            >
+                                <BiUserCircle className="h-7 w-7 text-white"/>
+                            </a>
+                        </Link>
+                        <a
+                            href="#"
+                            className=" text-gray-800 rounded-md shadow hover:bg-gray-800"
+                        >
+                            <BiExit className="h-7 w-7 text-white" onClick={()=>{logout()}}/>
+                        </a>
+                    </>) : (
+                        <>
+                        <a
+                            href="#"
+                            className=" text-gray-800 rounded-md shadow hover:bg-gray-800"
+                            onClick={()=>{handleLogin()}}
+                        >
+                            <BiLogIn className="h-7 w-7 mr-3 text-white"/>
+                        </a>
+                        </>
+                    )}
                 </div>
             </div>
         </nav>

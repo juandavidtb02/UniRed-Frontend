@@ -4,6 +4,8 @@ import {CgDanger} from 'react-icons/cg'
 import Swal from "sweetalert2";
 import useUserContext from "../../hooks/useUser";
 import { useNavigate } from "react-router-dom";
+import dataUser from "../../datosquemadosxd/dataUser";
+
 export default function Login(){
     const [error,setError] = React.useState({
         state:false,
@@ -27,25 +29,25 @@ export default function Login(){
             "email":e.target.elements.email.value,
             "password":e.target.elements.password.value
         }
-        const user = {
-            name:'juan',
-            email:'admin@admin'
-        }
+
         
         try{
-            if(jsonData.email !== user.email || jsonData.password !== '123') throw new Error(jsonData)
+            const foundUser = dataUser.find(user => user.email === jsonData.email && user.password === jsonData.password);
+            if (!foundUser) throw new Error(jsonData)
+            // if(jsonData.email !== user.email || jsonData.password !== '123') throw new Error(jsonData)
             setError({
                 state:false,
                 message:''
             })
 
-
-            setUserLog(user)
-            localStorage.setItem('user',JSON.stringify(user))
+            setUserLog(foundUser)
+            localStorage.setItem('user',JSON.stringify(foundUser))
     
             Swal.fire({
                 icon: 'success',
-                title: 'Inicio de sesión exitoso!'
+                title: 'Inicio de sesión exitoso!',
+                background: '#151F2E',
+                color:'#FFFFFF'
             }).then((result)=>{
                 
             })
@@ -69,10 +71,10 @@ export default function Login(){
 
     return(
         <form onSubmit={login}>
-        <h3 className="flex text-lg leading-6 font-medium text-white items-center justify-center mb-3">
+        <h3 className="flex text-lg leading-6 font-medium text-gray-200 items-center justify-center mb-3">
             Iniciar sesión
         </h3>
-        {error.state ? (<div className="flex inline-block items-center my-2 bg-red-500 text-white p-2 w-full rounded-xl col-span-2 max-w-sm"><CgDanger className="w-5 h-5 mr-1"/>{error.message}</div>) : null}
+        {error.state ? (<div className="flex inline-block items-center my-2 bg-red-500 text-gray-200 p-2 w-full rounded-xl col-span-2 max-w-sm"><CgDanger className="w-5 h-5 mr-1"/>{error.message}</div>) : null}
         <div className="mt-7">
             <div className="text-sm leading-5 text-gray-500">
                 <div className=" relative mt-2 ">
@@ -88,7 +90,7 @@ export default function Login(){
                     <label
                         htmlFor="email"
                         
-                        className='absolute text-sm text-white duration-300 transform -translate-y-2 scale-75 top-2 z-10 origin-[0] spx-2 peer-focus:px-2 peer-focus:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-2 left-1'
+                        className='absolute text-sm text-gray-400 duration-300 transform -translate-y-2 scale-75 top-2 z-10 origin-[0] spx-2 peer-focus:px-2 peer-focus:text-gray-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-2 left-1'
                         >
                             Correo electronico
                     </label>
@@ -106,7 +108,7 @@ export default function Login(){
                     <label
                         htmlFor="email"
                         
-                        className='absolute text-sm text-white duration-300 transform -translate-y-2 scale-75 top-2 z-10 origin-[0] spx-2 peer-focus:px-2 peer-focus:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-2 left-1'
+                        className='absolute text-sm text-gray-400 duration-300 transform -translate-y-2 scale-75 top-2 z-10 origin-[0] spx-2 peer-focus:px-2 peer-focus:text-gray-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-2 left-1'
                         >
                             Contraseña
                     </label>
@@ -134,7 +136,7 @@ export default function Login(){
                     Ingresar
                 </button>
             </span>
-            <p className="text-white text-sm mt-3 cursor-pointer hover:underline" onClick={()=>{forgetPassword()}}>¿Olvidaste tu contraseña?</p>
+            <p className="text-gray-200 text-sm mt-3 cursor-pointer hover:underline" onClick={()=>{forgetPassword()}}>¿Olvidaste tu contraseña?</p>
         </div>
         </form>
     )

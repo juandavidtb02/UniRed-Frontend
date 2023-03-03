@@ -19,6 +19,7 @@ export default function SignUp(){
         const jsonData = {
             "name":e.target.elements.name.value,
             "email":e.target.elements.email.value,
+            "username":e.target.elements.username.value,
             "password":e.target.elements.password.value,
             "confirm_password":e.target.elements.confirm_password.value
         }
@@ -61,11 +62,11 @@ export default function SignUp(){
 
     return(
         <form onSubmit={register}>
-        <h3 className="flex text-lg leading-6 font-medium text-white items-center justify-center mb-3">
+        <h3 className="flex text-lg leading-6 font-medium text-white items-center justify-center mb-1">
             Registro
         </h3>
         {error.state ? (<div className="flex inline-block items-center my-2 bg-red-500 text-white p-2 w-full rounded-xl col-span-2 max-w-sm"><CgDanger className="w-5 h-5 mr-1"/>{error.message}</div>) : null}
-        <div className="mt-7">
+        <div className="mt-1">
             <div className="text-sm leading-5 text-gray-500">
                 <div className=" relative mt-2 ">
                     <input
@@ -83,6 +84,25 @@ export default function SignUp(){
                         className='absolute text-sm text-white duration-300 transform -translate-y-2 scale-75 top-2 z-10 origin-[0] spx-2 peer-focus:px-2 peer-focus:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-2 left-1'
                         >
                             Nombre
+                    </label>
+                </div>
+
+                <div className=" relative mt-5 ">
+                    <input
+                        // onChange={handleChangeFormAdd}
+                        name="username"    
+                        type="text"
+                        required
+                        id="floatingInput1_login"
+                        placeholder=" "
+                        autoComplete="off"
+                        className='block px-2.5 pb-2.5 pt-4 w-80 text-sm text-gray-200 rounded-lg  appearance-none focus:outline-none focus:ring-0 peer bg-gray-900'/>
+                    <label
+                        htmlFor="username"
+                        
+                        className='absolute text-sm text-white duration-300 transform -translate-y-2 scale-75 top-2 z-10 origin-[0] spx-2 peer-focus:px-2 peer-focus:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-2 left-1'
+                        >
+                            Nombre de usuario
                     </label>
                 </div>
 

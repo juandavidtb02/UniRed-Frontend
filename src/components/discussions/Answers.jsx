@@ -28,6 +28,8 @@ export default function Answers(){
             showCancelButton: true,
             confirmButtonText: 'Reportar',
             showLoaderOnConfirm: true,
+            background: '#151F2E',
+            color:'#FFFFFF',
             preConfirm: (login) => {
             //   return fetch(`//api.github.com/users/${login}`)
             //     .then(response => {
@@ -47,7 +49,9 @@ export default function Answers(){
             if (result.isConfirmed) {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Se ha reportado el mensaje correctamente'
+                    title: 'Se ha reportado el mensaje correctamente',
+                    background: '#151F2E',
+                    color:'#FFFFFF'
                 })
                 setReported(true)
             }
@@ -87,7 +91,7 @@ export default function Answers(){
     }
     return(
         <>
-            <div className="p-3 border-2 rounded-md mt-3">
+            <div className="p-3 bg-slate-700 rounded-md mt-3">
                 <div className="flex pb-3">
                     <div className="flex-shrink-0">
                         <img className="h-10 w-10 object-cover rounded-full mr-4 cursor-pointer" src="https://v1.tailwindcss.com/img/jonathan.jpg" alt="Avatar of Jonathan Reinink"/>
